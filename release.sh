@@ -94,12 +94,6 @@ if [ 1 == $meson ]; then
     echo ""                                              >> $repo_name.wrap
     echo "[meson_provides]"                              >> $repo_name.wrap
     echo "lib$meson_provides = lib${meson_provides}_dep" >> $repo_name.wrap
-
-    echo "Making the sha256sums.txt file"
-    sha256sum $release_slug.tar.gz $release_slug.zip $repo_name.wrap > $release_slug-sha256sums.txt
-else
-    echo "Making the sha256sums.txt file"
-    sha256sum $release_slug.tar.gz $release_slug.zip > $release_slug-sha256sums.txt
 fi
 
 echo "Copying files to the artifacts directory"
@@ -109,6 +103,11 @@ cp ${release_slug}* $artifact_dir/.
 if [ -f $repo_name.wrap ]; then
     cp $repo_name.wrap $artifact_dir/.
 fi
+
+pushd $artifact_dir
+echo "Making the sha256sums.txt file"
+sha256sum .* > $release_slug-sha256sums.txt
+popd
 
 # Read through the changelog file and pull out the relavent release notes
 output=0
