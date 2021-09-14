@@ -20,8 +20,9 @@ changelog=$2
 meson_wrap=$3
 meson_lib_provided=$4
 
-echo "        gh_repo: $gh_repo"
-echo "        changelog: $changelog"
+echo "           gh_repo: $gh_repo"
+echo "            branch: ${GITHUB_REF#refs/tags/}"
+echo "         changelog: $changelog"
 echo "        meson_wrap: $meson_wrap"
 echo "meson_lib_provided: $meson_lib_provided"
 
