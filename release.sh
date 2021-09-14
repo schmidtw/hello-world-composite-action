@@ -25,6 +25,8 @@ echo "            branch: ${GITHUB_REF#refs/tags/}"
 echo "         changelog: $changelog"
 echo "        meson_wrap: $meson_wrap"
 echo "meson_lib_provided: $meson_lib_provided"
+echo "               env:"
+env
 
 ls -la
 
