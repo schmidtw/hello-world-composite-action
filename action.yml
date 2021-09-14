@@ -41,5 +41,6 @@ runs:
           ${{ inputs.changelog }} \
           ${{ inputs.meson-wrap }} \
           ${{ inputs.meson-provides }} \
+          ${{ inputs.artifact-dir }} \
           ${{ inputs.verbose }} \
       shell: bash
