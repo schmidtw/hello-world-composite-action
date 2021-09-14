@@ -15,12 +15,18 @@ repo_slug="none"
 provides="none"
 meson=0
 
-gh_repo=$1
+gh_slug=$1
 changelog=$2
 meson_wrap=$3
 meson_lib_provided=$4
 
-echo "           gh_repo: $gh_repo"
+repo_tmp=(${IN//\// })
+org=${repo_tmp[0]}
+repo=${repo_tmp[1]}
+
+echo "           gh_slug: $gh_slug"
+echo "              repo: $repo"
+echo "               org: $org"
 echo "            branch: ${GITHUB_REF#refs/tags/}"
 echo "         changelog: $changelog"
 echo "        meson_wrap: $meson_wrap"
