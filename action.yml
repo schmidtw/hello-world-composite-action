@@ -1,4 +1,7 @@
-name: 'Changelog Release Agent'
+# SPDX-FileCopyrightText: 2021 Comcast Cable Communications Management, LLC
+# SPDX-License-Identifier: Apache-2.0
+
+name: 'Release Builder Action'
 description: 'Drive semantic versioned releases from the changelog file.'
 inputs:
   changelog:
@@ -10,7 +13,7 @@ inputs:
     required: false
     default: 'false'
   meson-provides:
-    description: 'Only used if meson-wrap is to true.  If defined sets the output meson dependency name.'
+    description: 'If defined sets the output meson dependency name (if a meson wrap is being generated).'
     required: false
     default: 'none'
   verbose:

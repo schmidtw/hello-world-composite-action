@@ -9,10 +9,11 @@ repo_slug=$1
 changelog=$2
 meson_wrap=$3
 meson_provides=$4
+artifact_dir=$5
 verbose=0
 
-if [ "$#" -eq 5 ]; then
-    verbose=$5
+if [ "$#" -eq 6 ]; then
+    verbose=$6
 fi
 
 repo_tmp=(${repo_slug//\// })
@@ -56,6 +57,7 @@ if [[ "none" == $meson_provides ]]; then
     meson_provides=$repo_name
 fi
 
+# This information should help if you are debugging something
 if [ 0 -lt $verbose ]; then
     echo "       version: $version"
     echo "   raw_version: $raw_version"
@@ -76,7 +78,6 @@ echo "Making the .zip archive"
 git archive --format=zip    -o $release_slug.zip --prefix=$release_slug/ $version
 
 if [ 1 == $meson ]; then
-
     echo "Making the .wrap file for meson"
 
     tgz_sum=`sha256sum $release_slug.tar.gz`
@@ -102,13 +103,14 @@ else
 fi
 
 echo "Copying files to the artifacts directory"
-mkdir -p artifacts
-cp ${release_slug}* artifacts/.
+mkdir -p $artifact_dir
+cp ${release_slug}* $artifact_dir/.
 
 if [ -f $repo_name.wrap ]; then
-    cp $repo_name.wrap artifacts/.
+    cp $repo_name.wrap $artifact_dir/.
 fi
 
+# Read through the changelog file and pull out the relavent release notes
 output=0
 notes=''
 while read line; do
@@ -123,12 +125,13 @@ if [ 1 -eq $output ]; then
 fi
 done <$changelog
 
-#cat $changelog | perl -0777 -ne 'print "$1\n"' # if /.*## \[${version}\]\s(.*?)\s+## \[(v\d+.\d+.\d+)\].*/s'
+# Why YYYY-MM-DD?
+# https://xkcd.com/1179/
+today=`date +'%Y-%m-%d'`
 
-#notes=$(cat $changelog | perl -0777 -ne 'print "$1\n" if /.*## \[${version}\]\s(.*?)\s+## \[(v\d+.\d+.\d+)\].*/s')
-today=`date +'%Y/%m/%d'`
-
+# Defining the output variables
 echo ::set-output name=release-name::$(echo ${version} ${today})
 echo ::set-output name=release-body::${notes}
+echo ::set-output name=artifact-dir::${artifact_dir}
 
 exit 0
