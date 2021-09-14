@@ -1,21 +1,25 @@
-name: 'Hello World'
-description: 'Greet someone'
+name: 'Changelog Release Agent'
+description: 'Drive semantic versioned releases from the changelog file.'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
-    required: true
-    default: 'World'
-outputs:
-  random-number:
-    description: "Random number"
-    value: ${{ steps.random-number-generator.outputs.random-id }}
+  changelog:
+    description: 'The changelog file to examine.'
+    required: false
+    default: 'CHANGELOG.md'
+  meson-wrap:
+    description: 'If set to true a meson wrap file is included in the release.'
+    required: false
+    default: 'false'
+  meson-library-provided:
+    description: 'Only used if meson-wrap is to true.  If defined sets the output meson dependency name.'
+    required: false
+    default: 'none'
 runs:
   using: "composite"
   steps:
-    - run: echo Hello ${{ inputs.who-to-greet }}.
-      shell: bash
-    - id: random-number-generator
-      run: echo "::set-output name=random-id::$(echo $RANDOM)"
-      shell: bash
-    - run: ${{ github.action_path }}/goodbye.sh
+    - run: |
+        ${{ github.action_path }}/release.sh \
+          ${{ github.repository }} \
+          ${{ inputs.changelog }} \
+          ${{ inputs.meson-wrap }} \
+          ${{ inputs.meson-library-provided }} \
       shell: bash
