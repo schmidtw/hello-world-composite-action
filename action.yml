@@ -36,7 +36,7 @@ runs:
   steps:
     - id: make-release
       run: |
-        ${{ github.action_path }}/release.sh \
+        ${{ github.action_path }}/docker.sh \
           ${{ github.repository }} \
           ${{ inputs.changelog }} \
           ${{ inputs.meson-wrap }} \
