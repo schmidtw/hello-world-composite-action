@@ -24,7 +24,7 @@ inputs:
   testing:
     description: 'Set to 1 to enable more verbose debugging information.'
     required: false
-    default: "${{ inputs.artifact-dir }}"
+    default: "can't set this to a inputs value."
     
 outputs:
   release-name:
