@@ -21,6 +21,11 @@ inputs:
     description: 'Set to 1 to enable more verbose debugging information.'
     required: false
     default: '0'
+  testing:
+    description: 'Set to 1 to enable more verbose debugging information.'
+    required: false
+    default: ${{ inputs.artifact-dir }}
+    
 outputs:
   release-name:
     description: 'Release name'
@@ -34,6 +39,9 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - shell: bash
+      run: echo "${{ inputs.testing }}"
+      
     - id: make-release
       run: |
         ${{ github.action_path }}/docker.sh \
